@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -12,7 +13,7 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
+        return Event::latest()->paginate(10);
     }
 
     /**
@@ -20,7 +21,17 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = Event::create([
+            ...$request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'nullable|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after:start_date',
+            ]),
+            'user_id' => 1,
+        ]);
+
+        return $event;
     }
 
     /**
@@ -28,7 +39,7 @@ class EventController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Event::findOrFail($id);
     }
 
     /**
