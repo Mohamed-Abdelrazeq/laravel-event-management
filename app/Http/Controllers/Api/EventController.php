@@ -45,16 +45,29 @@ class EventController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Event $event)
     {
-        //
+        $event->update([
+            ...$request->validate([
+                'name' => 'sometimes|string|max:255',
+                'description' => 'nullable|string',
+                'start_date' => 'sometimes|date',
+                'end_date' => 'sometimes|date|after:start_date',
+            ]),
+        ]);
+
+        return $event;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Event $event)
     {
-        //
+        $event->delete();
+
+        return response()->json([
+            'message' => 'Event deleted successfully.',
+        ]);
     }
 }
