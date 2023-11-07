@@ -18,9 +18,7 @@ class EventController extends Controller
     {
         $this->middleware('auth:sanctum')->except(['index', 'show']);
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $query = $this->loadRelationships(Event::query());
@@ -30,11 +28,6 @@ class EventController extends Controller
         );
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $event = Event::create([
