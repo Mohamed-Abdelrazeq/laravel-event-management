@@ -29,7 +29,7 @@ class AttendeeController extends Controller
         return new AttendeeResource($attendee);
     }
 
-    public function destroy(string $event, Attendee $attendee)
+    public function destroy(Event $event, Attendee $attendee)
     {
         $this->authorize('delete-attendee', [$event, $attendee]);
         $attendee = $attendee->delete();
