@@ -14,6 +14,7 @@ class AttendeeController extends Controller
     public function __construct()
     {
         $this->middleware('auth:sanctum')->except(['index']);
+        $this->authorizeResource(Attendee::class, 'attendee');
     }
     public function index(Event $event)
     {
