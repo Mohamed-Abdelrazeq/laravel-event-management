@@ -7,6 +7,7 @@ use App\Http\Resources\EventResource;
 use App\Http\Traits\CanLoadRelationships;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EventController extends Controller
 {
@@ -43,19 +44,15 @@ class EventController extends Controller
         return new EventResource($this->loadRelationships($event));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Event $event)
     {
         return new EventResource($this->loadRelationships($event));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Event $event)
     {
+        $this->authorize('modify-event', $event);
+
         $event->update([
             ...$request->validate([
                 'name' => 'sometimes|string|max:255',
@@ -68,11 +65,9 @@ class EventController extends Controller
         return new EventResource($this->loadRelationships($event));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Event $event)
     {
+        $this->authorize('modify-event', $event);
         $event->delete();
 
         return response()->json([
